@@ -34,7 +34,6 @@
       padding: var(--spacingXS) var(--spacingS);
       border-radius: var(--borderRadiusM);
       margin-bottom: var(--spacingXS);
-
     }
   
   </style>
@@ -45,7 +44,14 @@
       
       <div class="article">
         <h1>Markov Sentence Generator</h1>
-        <p>This will create sentences based off your source input. Try pasting text from a book into the textbox and clicking "generate".</p>
+        <p>Generate unique sentences based on your text input using Markov chains. Try pasting text from a book into the textbox and clicking "generate".</p>
+        <p>Context determines how strictly the input text is followed. Higher values are less creative but more coherent. A context of 2 or 3 usually works best, depending on input size.</p>
+        <div class="spacingVM"></div>
+        <label for="contextInput">Context</label>
+        <div class="spacingVXS"></div>
+        <input id="contextInput" type="number" min="1" max="10">
+        <div class="spacingVM"></div>
+        <hr>
         <div class="spacingVM"></div>
         <div id="errorDiv"></div>
         <button id="generateBtn" class="primaryBtn">Generate</button>

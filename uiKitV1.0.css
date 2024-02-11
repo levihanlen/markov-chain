@@ -180,10 +180,15 @@ h4, .h4 {
   font-size: var(--fontSizeH4);
 }
 
+hr {
+  border: none;
+  border-top: var(--borderSize) solid var(--colorLight);
+}
+
 p {
   line-height: 1.5;
   margin-top: var(--spacingS);
-  color: var(--colorDarkest);
+  color: var(--colorDark);
   font-size: var(--fontSizeBody);
   font-weight: var(--weightNormal);
   /*
@@ -356,7 +361,8 @@ input:focus, select:focus {
 }
 
 label {
-  padding-bottom: var(--spacingXS)
+  padding-bottom: var(--spacingXS);
+  color: var(--colorDarkest);
 }
 
 optgroup, option {

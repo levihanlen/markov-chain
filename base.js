@@ -3,6 +3,8 @@ const generateBtn = document.querySelector("#generateBtn");
 const textTextarea = document.querySelector("#textTextarea");
 const errorDiv = document.querySelector("#errorDiv");
 const wordOutput = document.querySelector("#wordOutput");
+const contextInput = document.querySelector("#contextInput");
+
 let errors = [];
 
 let data = {};
@@ -11,11 +13,20 @@ let words = [];
 
 let output = "";
 
+let context = 2;
 
+contextInput.value = context;
+contextInput.addEventListener("input", () => {
+  context = Math.min(Math.max(parseInt(contextInput.value), 1), 10);
+  contextInput.value = context;
+})
 
 generateBtn.addEventListener("click", () => {
+  /*
   textParse();
   generate();
+  */
+ generateMarkovChain();
 })
 
 textTextarea.addEventListener("input", () => {
@@ -38,6 +49,153 @@ function removeErrors() {
 
 }
 
+/*
+function generateMarkovChain() {
+  const text = textTextarea.value;
+  const lines = text.split('\n');
+
+  const contextArr = [];
+  for (let i = 0; i < context; i++) {
+    contextArr.push('');
+  }
+  const possibles = {};
+
+  // Iterate through each line
+  lines.forEach(line => {
+    const words = line.split(/\s+/);
+    console.log(contextArr);
+    words.forEach(word => {
+
+      let key = ``;
+      for (let i = 0; i < context; i++) {
+        if (i > 0) {
+          key += `,`;
+        }
+        key += contextArr[i];
+      }
+      if (!possibles[key]) {
+        possibles[key] = [];
+      }
+      possibles[key].push(word);
+      for (let i = 0; i < context; i++) {
+        if (i === context - 1) {
+          // last item in context
+          contextArr[i] = word;
+        } else {
+          contextArr[i] = contextArr[i + 1];
+        }
+      }
+    });
+  });
+
+  const endKeys = [];
+  for (let i = 0; i < context; i++) {
+    
+  }
+  const endKey1 = `${w1},${w2}`;
+  const endKey2 = `${w2},`;
+  if (!possibles[endKey1]) {
+    possibles[endKey1] = [];
+  }
+  possibles[endKey1].push('');
+  if (!possibles[endKey2]) {
+    possibles[endKey2] = [];
+  }
+  possibles[endKey2].push('');
+
+  // Filter for capitalized keys, ensuring that the first part of the key exists and is not empty
+  const capitalizedKeys = Object.keys(possibles).filter(key => {
+    const parts = key.split(',');
+    return parts[0] && parts[0][0] === parts[0][0].toUpperCase();
+  });
+
+  if (capitalizedKeys.length === 0) {
+    wordOutput.innerText = "No capitalized starting words found.";
+    return;
+  }
+
+  const randomKey = capitalizedKeys[Math.floor(Math.random() * capitalizedKeys.length)];
+  [w1, w2] = randomKey.split(',');
+
+  const output = [w1, w2];
+  const outputSize = 100; // Set a fixed output size or modify to be a user input
+
+  for (let i = 0; i < outputSize && possibles[`${w1},${w2}`].length; i++) {
+    const key = `${w1},${w2}`;
+    const word = possibles[key][Math.floor(Math.random() * possibles[key].length)];
+    output.push(word);
+    w1 = w2;
+    w2 = word;
+  }
+
+  wordOutput.innerText = output.join(' ');
+}
+
+*/
+
+
+function generateMarkovChain() {
+  textParse();
+  generate();
+}
+
+function textParse() {
+  data = {};
+  let text = textTextarea.value;
+  if (text.length === 0) {
+    showError("Add text for processing to work.")
+    return;
+  }
+  text = text
+    .replace(/\s+/g, ' ')
+    .trim();
+  const arr = text.split(' ');
+  for (let i = 0; i < arr.length; i++) {
+    // filling the data object.
+    if (!arr[i] || !arr[i - context]) {
+      continue;
+    }
+    const word = arr.slice(i - context, i).join(" ");
+    //console.log(word);
+    
+    if (data[word]) {
+      data[word].push(arr[i]);
+    } else {
+      data[word] = [arr[i]];
+    }
+    
+  }
+  console.log(data);
+}
+
+function generate() {
+  words = [];
+  let wordCount = 100;
+  wordOutput.innerHTML = "";
+  const wordGroups = Object.keys(data);
+  
+  output = wordGroups[Math.floor(Math.random() * wordGroups.length)];
+  for (let j = 0; j < wordCount; j++) {
+    const split = output.split(' ');
+    const word = split.slice(split.length - context, split.length).join(' ');
+    // console.log(word, output, wordGroups);
+    console.log(data[word]);
+    if (wordGroups.includes(word)) {
+      console.log("intere");
+      const newWords = data[word];
+      console.log(newWords);
+      output = output + " " + newWords[Math.floor(Math.random() * newWords.length)];
+    } else {
+
+      output = output + " was";
+    }
+  }
+  console.log(output);
+  wordOutput.innerHTML += `${output}`;
+
+}
+
+/*
 function textParse() {
   data = {};
   let text = textTextarea.value;
@@ -57,13 +215,6 @@ function textParse() {
     }
     const word = arr[i];
     
-    /*
-    if (word.length < 4) {
-      // must be at least 4 letters long.
-      continue;
-    }
-    */
-    
     if (data[word]) {
       data[word].push(arr[i + 1]);
     } else {
@@ -75,14 +226,13 @@ function textParse() {
 }
 
 function generate() {
-  
-  output = "Alice was"; // testing one.
   words = [];
   wordOutput.innerHTML = "";
   const wordGroups = Object.keys(data);
+  
+  output = wordGroups[Math.floor(Math.random() * wordGroups.length)];
   for (let j = 0; j < 100; j++) {
     const word = output.split(' ')[output.split(' ').length - 1];
-    console.log(word);
     if (wordGroups.includes(word)) {
       const word = data[output.split(' ')[output.split(' ').length - 1]];
       output = output + " " + word[Math.floor(Math.random() * word.length)];
@@ -94,6 +244,7 @@ function generate() {
   wordOutput.innerHTML += `${output}`;
   
 }
+*/
 
 
 
