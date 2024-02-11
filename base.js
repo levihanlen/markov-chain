@@ -16,7 +16,10 @@ let output = "";
 let context = 2;
 
 contextInput.value = context;
-contextInput.addEventListener("input", () => {
+contextInput.addEventListener("change", () => {
+  if (!contextInput.value) {
+    contextInput.value = 1;
+  }
   context = Math.min(Math.max(parseInt(contextInput.value), 1), 10);
   contextInput.value = context;
 })
