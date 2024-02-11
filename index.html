@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello, world!</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="" />
+  <link rel="icon" href="favicon.png">
+  <link rel="stylesheet" href="uiKitV1.0.css">
+  <style>
+    .article {
+      width: 100%;
+    }
+
+    #textTextarea {
+      resize: none;
+      width: 100%;
+      height: 100%;
+
+    }
+    #errorDiv {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .textareaContainer {
+      border-radius: var(--borderRadiusM);
+      overflow: hidden;
+      height: 300px;
+    }
+
+    .errorSpan {
+      background-color: var(--colorErrorLight);
+      padding: var(--spacingXS) var(--spacingS);
+      border-radius: var(--borderRadiusM);
+      margin-bottom: var(--spacingXS);
+
+    }
+  
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="content">
+      
+      <div class="article">
+        <h1>Markov Sentence Generator</h1>
+        <p>This will create sentences based off your source input. Try pasting text from a book into the textbox and clicking "generate".</p>
+        <div class="spacingVM"></div>
+        <div id="errorDiv"></div>
+        <button id="generateBtn" class="primaryBtn">Generate</button>
+        <div class="spacingVXS"></div>
+        <div class="textareaContainer">
+          <textarea id="textTextarea"></textarea>
+        </div>
+        <div class="spacingVM"></div>
+        <div class="spacingVXS"></div>
+        <div id="wordOutput">
+          This is where words will be generated:
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+<script src="base.js"></script>
+</html>
