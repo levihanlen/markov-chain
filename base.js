@@ -71,11 +71,6 @@ function textParse() {
     }
     
   }
-  /*
-  if (Object.keys(data).length == 0) {
-    showError("Invalid text. Only words with 4 or more letters count.")
-  }
-  */
   console.log(data);
 }
 
@@ -86,42 +81,12 @@ function generate() {
   wordOutput.innerHTML = "";
   const wordGroups = Object.keys(data);
   for (let j = 0; j < 100; j++) {
-    // let word = wordGroups[Math.floor(Math.random() * wordGroups.length)];
-    const possibleGroups = []
-    /*
-    for (let k = 0; k < wordGroups.length; k++) {
-      // console.log(wordGroups[k].split(" ")[0]);
-      // console.log(output.split(' ')[output.split(' ').length - 1]);
-      console.log(output.split(' ')[output.split(' ').length - 1]);
-      if (wordGroups[k] == output.split(' ')[output.split(' ').length - 1]) {
-        console.log("inthere");
-        possibleGroups.push(wordGroups[k]);
-      }
-    }
-    */
-    // console.log("possible:", possibleGroups);
-    if (1 > 0) {
+    const word = output.split(' ')[output.split(' ').length - 1];
+    console.log(word);
+    if (wordGroups.includes(word)) {
       const word = data[output.split(' ')[output.split(' ').length - 1]];
       output = output + " " + word[Math.floor(Math.random() * word.length)];
-      /*
-      let total = 0;
-      for (let k = 0; k < possibleGroups.length; k++) {
-        // console.log(possibleGroups[k], data[possibleGroups[k]]);
-        total += data[possibleGroups[k]];
-      }
-      let accum = 0;
-      let rand = Math.random() * total;
-      for (let k = 0; k < possibleGroups.length; k++) {
-        // possibleGroups[k], data[possibleGroups[k]]
-        if (rand <= data[possibleGroups[k]] + accum) {
-          output = output + " " + possibleGroups[k].split(" ")[1];
-          break;
-        }
-        accum += data[possibleGroups[k]];
-      }
-      */
     } else {
-      // console.log("No possiblities: ", word);
       output = output + " was"; // make it random based on whether the last was a vowel or not.
     }
   }
